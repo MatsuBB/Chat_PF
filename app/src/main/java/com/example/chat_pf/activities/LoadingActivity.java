@@ -42,7 +42,7 @@ public class LoadingActivity extends AppCompatActivity {
 
         @Override
         public void onFinish() {
-            Intent intent = new Intent(LoadingActivity.this, SignUpActivity.class);
+            Intent intent = new Intent(LoadingActivity.this, LoginActivity.class);
             startActivity(intent);
         }
     }
