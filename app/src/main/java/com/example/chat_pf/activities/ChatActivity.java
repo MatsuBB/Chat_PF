@@ -1,29 +1,33 @@
 package com.example.chat_pf.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.chat_pf.R;
-import com.example.chat_pf.database.DatabaseOperations;
 import com.example.chat_pf.databinding.ActivityChatBinding;
 import com.example.chat_pf.models.Message;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Objects;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -32,39 +36,131 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        DatabaseOperations mDBO = new DatabaseOperations();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
         // needed stuff
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        DatabaseOperations mDBO = new DatabaseOperations();
 
         // getting the user
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+        // displays the messages
+        mDBO.loadMessages(user);
+
+        // submits the input to the realtime database
         EditText input = binding.input;
         Button enter = binding.enterButton;
-
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mDBO.sendMessage(user, String.valueOf(input.getText()));
+                input.setText("");
             }
         });
+    }
 
-        // getting the messages, prob move this to DatabaseOperations later
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("messages").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (!task.isSuccessful()) {
-                    Log.e("firebase", "Error getting data", task.getException());
+    public class DatabaseOperations{
+        /**
+         * All operations that require access to the firebase realtime database should be generated as
+         * a method in this class.
+         */
+        private final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        private final String TAG = "DBO";
+
+        private void adminAuth(){
+            // TODO make a user for the DBO with moderator privileges to make the rules more secure
+        }
+
+        public void sendMessage(FirebaseUser user, String message){
+            if(user != null){
+                try{
+                    String name = user.getDisplayName();
+                    String id = user.getUid();
+
+                    Long currentTime = System.currentTimeMillis();
+                    SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss");
+
+                    DatabaseReference newRef = mDatabase.child("messages").child(
+                            sdf.format(new Date(currentTime)));
+                    newRef.setValue(new Message(name, message, currentTime, id));
+                } catch(Exception e){Log.e(TAG, "error sending message");}
+            } else{Log.e(TAG, "null user can not send message");}
+        }
+
+        private void loadMessages(FirebaseUser currentUser){
+            // Change the path from the next line of code if you change de realtime database structure
+            mDatabase.child("messages").addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot ds, @Nullable String previousChildName) {
+                    Message message = new Message(
+                            ds.child("name").getValue(String.class),
+                            ds.child("text").getValue(String.class),
+                            ds.child("date").getValue(Long.class),
+                            ds.child("id").getValue(String.class));
+                    Log.d(TAG, String.valueOf(message));
+                    displayMessage(binding.linearLayout, message, currentUser);
                 }
-                else {
-                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    Log.e(TAG, "loadMessageListener:onChildChanged");
                 }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                    Log.e(TAG, "loadMessageListener:onChildRemoved");
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    Log.e(TAG, "loadMessageListener:onChildMoved");
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.e(TAG, "loadMessageListener:onCancelled");
+                }
+            });
+        }
+    }
+
+    private void displayMessage(LinearLayout layout, Message m, FirebaseUser user){
+        try {
+            // Setting the properties for all messages
+            TextView tv_name = new TextView(ChatActivity.this);
+            TextView tv_message = new TextView(ChatActivity.this);
+
+            LinearLayout.LayoutParams m_params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            tv_message.setText(m.text);
+            tv_message.setTextSize(22);
+
+            LinearLayout.LayoutParams n_params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            tv_name.setText(m.name);
+            tv_name.setTextSize(22);
+            tv_name.setTypeface(Typeface.DEFAULT_BOLD);
+
+            if(user.getUid().equals(m.id)) {
+                // Setting some properties for messages that are from the current user
+                tv_message.setGravity(Gravity.RIGHT);
+                tv_name.setGravity(Gravity.RIGHT);
+                n_params.setMargins(0, 0, 5, 0);
+                m_params.setMargins(250, 0, 55, 0);
+            } else{
+                // Setting some properties for messages that are NOT from the current user
+                n_params.setMargins(5, 0, 0, 0);
+                m_params.setMargins(55, 0, 250, 0);
             }
-        });
+
+            tv_name.setLayoutParams(n_params);
+            tv_message.setLayoutParams(m_params);
+
+            layout.addView(tv_name);
+            layout.addView(tv_message);
+        } catch(Exception e){Log.e(TAG, String.valueOf(e));}
     }
 }

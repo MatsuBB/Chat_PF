@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +36,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
     private FirebaseAuth auth;
     TextView forgotPassword;
+
+    final String TAG="DEBUGGING";
 //    GoogleSignInButton googleBtn;
 //    GoogleSignInOptions gOptions;
 //    GoogleSignInClient gClient;
@@ -68,13 +71,14 @@ public class LoginActivity extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(AuthResult authResult) {
                                         Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(LoginActivity.this, ChatActivity.class));
+                                        startActivity(new Intent(LoginActivity.this, LoadingActivity.class));
                                         finish();
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
                                         Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
+                                        Log.e(TAG, String.valueOf(e));
                                     }
                                 });
                     } else {

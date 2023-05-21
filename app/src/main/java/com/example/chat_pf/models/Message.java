@@ -1,28 +1,23 @@
 package com.example.chat_pf.models;
 
-public class Message {
-    public String sender;
-    public String text;
+import androidx.annotation.NonNull;
 
-    public Message(String sender, String text) {
-        this.sender = sender;
+public class Message{
+    public String name, text, id;
+    public Long date;
+
+    public Message(String name, String text, Long date, String email) {
+        this.name = name;
         this.text = text;
+        this.date = date;
+        this.id = email;
     }
 
-    public String getSender() {
-        return sender;
-    }
-
-    public void setSender(String sender) {
-        this.sender = sender;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
+    @NonNull
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "[ date = " + date + ", name = " + name + ", " +
+                "text = " + text + ", "  + "id = " + id + " ]";
     }
 }
 

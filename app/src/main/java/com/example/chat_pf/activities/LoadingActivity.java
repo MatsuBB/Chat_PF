@@ -15,7 +15,6 @@ public class LoadingActivity extends AppCompatActivity {
     ActivityLoadingBinding binding;
     MyCountDownTimer myCountDownTimer;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +41,7 @@ public class LoadingActivity extends AppCompatActivity {
 
         @Override
         public void onFinish() {
-            Intent intent = new Intent(LoadingActivity.this, LoginActivity.class);
+            Intent intent = new Intent(LoadingActivity.this, ChatActivity.class);
             startActivity(intent);
         }
     }
