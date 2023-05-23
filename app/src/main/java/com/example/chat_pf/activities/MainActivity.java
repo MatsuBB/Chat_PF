@@ -3,34 +3,21 @@ package com.example.chat_pf.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.chat_pf.R;
 import com.example.chat_pf.fragments.ChatFragment;
 import com.example.chat_pf.fragments.UserFragment;
-import com.example.chat_pf.models.User;
 import com.example.chat_pf.databinding.ActivityMainBinding;
 
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -40,7 +27,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -58,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         final ImageView profile_pic = activityMainBinding.profilePicImageview;
         final TextView username = activityMainBinding.chatName;
+        final TextView recent_messages = activityMainBinding.recentMessages;
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("name").child(user.getUid());
@@ -65,14 +52,9 @@ public class MainActivity extends AppCompatActivity {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //User user = snapshot.getValue(User.class);
-
-                username.setText(user);
-//                if (user.getImageUrl().equals("default")){
-//                    profile_pic.setImageResource(R.mipmap.ic_launcher);
-//                } else {
-//                    Glide.with(MainActivity.this).load(user.getImageUrl()).into(profile_pic);
-//                }
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                username.setText(user.getDisplayName());
+//
             }
 
             @Override
@@ -81,13 +63,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        TabLayout tabLayout = activityMainBinding.tabLayout;
-        ViewPager viewPager = activityMainBinding.viewPager;
+        recent_messages.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ChatActivity.class);//checar
+                startActivity(intent);
+            }
+        });
+
+
+
+//        TabLayout tabLayout = activityMainBinding.tabLayout;
+//        ViewPager viewPager = activityMainBinding.viewPager;
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(new ChatFragment(), "Chats");
         viewPagerAdapter.addFragment(new UserFragment(), "Users");
-        viewPager.setAdapter(viewPagerAdapter);
-        tabLayout.setupWithViewPager(viewPager);
+//        viewPager.setAdapter(viewPagerAdapter);
+//        tabLayout.setupWithViewPager(viewPager);
 
     }
 

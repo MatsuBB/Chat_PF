@@ -10,6 +10,7 @@
 
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/bicho"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -45,7 +46,7 @@
             android:textSize="18dp" />
 
         <TextView
-            android:id="@+id/recent_message"
+            android:id="@+id/recent_messages"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/chat_name"
@@ -53,7 +54,7 @@
             android:layout_toRightOf="@+id/parent_image_view"
             android:maxWidth="150dp"
             android:singleLine="true"
-            android:text="recent message"
+            android:text="Enter Chat"
             android:textSize="16dp" />
 
 
@@ -72,17 +73,17 @@
 
     </RelativeLayout>
 
-    <com.google.android.material.tabs.TabLayout
-    android:id="@+id/tab_layout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:tabSelectedTextColor="@color/purple_high"
-    app:tabIndicatorColor="@color/white"
-    app:tabTextColor="@color/white"/>
+<!--    <com.google.android.material.tabs.TabLayout-->
+<!--    android:id="@+id/tab_layout"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    app:tabSelectedTextColor="@color/purple_high"-->
+<!--    app:tabIndicatorColor="@color/white"-->
+<!--    app:tabTextColor="@color/white"/>-->
 
-    <androidx.viewpager.widget.ViewPager
-    android:id="@+id/view_pager"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+<!--    <androidx.viewpager.widget.ViewPager-->
+<!--    android:id="@+id/view_pager"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent" />-->
 
 </LinearLayout>
