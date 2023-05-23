@@ -34,17 +34,18 @@
                 android:textStyle="bold"
                 android:textColor="@color/purple_high"/>
 
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:id="@+id/signup_name"
-                            android:background="@drawable/custom_edit_text"
-                            android:layout_marginTop="40dp"
-                            android:padding="8dp"
-                            android:hint="Name"
-                            android:drawableLeft="@drawable/ic_person"
-                            android:drawablePadding="8dp"
-                            android:textColor="@color/black"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:id="@+id/signup_name"
+                android:background="@drawable/custom_edit_text"
+                android:layout_marginTop="40dp"
+                android:padding="8dp"
+                android:singleLine="true"
+                android:hint="Name"
+                android:drawableLeft="@drawable/ic_person"
+                android:drawablePadding="8dp"
+                android:textColor="@color/black"/>
 
             <EditText
                 android:layout_width="match_parent"
@@ -68,6 +69,19 @@
                 android:padding="8dp"
                 android:singleLine="true"
                 android:hint="Password"
+                android:drawableLeft="@drawable/ic_lock"
+                android:drawablePadding="8dp"
+                android:textColor="@color/black"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:id="@+id/confirm_password"
+                android:background="@drawable/custom_edit_text"
+                android:layout_marginTop="20dp"
+                android:padding="8dp"
+                android:singleLine="true"
+                android:hint="Confirm password"
                 android:drawableLeft="@drawable/ic_lock"
                 android:drawablePadding="8dp"
                 android:textColor="@color/black"/>
