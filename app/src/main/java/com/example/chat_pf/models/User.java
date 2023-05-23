@@ -3,12 +3,12 @@ package com.example.chat_pf.models;
 public class User {
     private String id;
     private String username;
-    private String imageURL;
+    //private String imageURL;
 
     public User(String id, String username, String imageURL) {
         this.id = id;
         this.username = username;
-        this.imageURL = imageURL;
+        //this.imageURL = imageURL;
     }
 
     public User(){
@@ -31,11 +31,11 @@ public class User {
         this.username = username;
     }
 
-    public String getImageUrl() {
-        return imageURL;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageURL = imageURL;
-    }
+//    public String getImageUrl() {
+//        return imageURL;
+//    }
+//
+//    public void setImageUrl(String imageUrl) {
+//        this.imageURL = imageURL;
+//    }
 }

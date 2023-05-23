@@ -46,7 +46,6 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding activityMainBinding;
-    FirebaseUser firebaseUser;
     DatabaseReference reference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,20 +59,20 @@ public class MainActivity extends AppCompatActivity {
         final ImageView profile_pic = activityMainBinding.profilePicImageview;
         final TextView username = activityMainBinding.chatName;
 
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("name").child(user.getUid());
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User user = snapshot.getValue(User.class);
+                //User user = snapshot.getValue(User.class);
 
-                username.setText(user.getUsername());
-                if (user.getImageUrl().equals("default")){
-                    profile_pic.setImageResource(R.mipmap.ic_launcher);
-                } else {
-                    Glide.with(MainActivity.this).load(user.getImageUrl()).into(profile_pic);
-                }
+                username.setText(user);
+//                if (user.getImageUrl().equals("default")){
+//                    profile_pic.setImageResource(R.mipmap.ic_launcher);
+//                } else {
+//                    Glide.with(MainActivity.this).load(user.getImageUrl()).into(profile_pic);
+//                }
             }
 
             @Override
