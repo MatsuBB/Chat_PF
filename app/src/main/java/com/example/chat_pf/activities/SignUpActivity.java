@@ -24,7 +24,7 @@ import android.text.method.PasswordTransformationMethod;
 
 public class SignUpActivity extends AppCompatActivity {
     private FirebaseAuth auth;
-    private EditText signupEmail, signupPassword, signupName;
+    private EditText signupEmail, signupPassword, signupName, confirmPassword;
     private Button signupButton;
     private TextView loginRedirectText;
     private final String TAG = "DEBUGGING";
@@ -42,7 +42,9 @@ public class SignUpActivity extends AppCompatActivity {
         signupName = findViewById(R.id.signup_name);
         signupEmail = findViewById(R.id.signup_email);
         signupPassword = findViewById(R.id.signup_password);
+        confirmPassword = findViewById(R.id.confirm_password);
         signupPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        confirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
         signupButton = findViewById(R.id.signup_button);
         loginRedirectText = findViewById(R.id.loginRedirectText);
 
@@ -52,6 +54,7 @@ public class SignUpActivity extends AppCompatActivity {
                 String user = signupEmail.getText().toString().trim();
                 String pass = signupPassword.getText().toString().trim();
                 String name = signupName.getText().toString().trim();
+                String cpass = confirmPassword.getText().toString().trim();
 
                 if (user.isEmpty()){
                     signupEmail.setError("Email cannot be empty");
@@ -63,6 +66,14 @@ public class SignUpActivity extends AppCompatActivity {
 
                 if (pass.isEmpty()){
                     signupPassword.setError("Password cannot be empty");
+                }
+
+                if (cpass.isEmpty()){
+                    confirmPassword.setError("Password cannot be empty");
+                }
+
+                if (!pass.equals(cpass)){
+                    confirmPassword.setError("Password Incorrect");
                 }
                 else{
                     auth.createUserWithEmailAndPassword(user, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
