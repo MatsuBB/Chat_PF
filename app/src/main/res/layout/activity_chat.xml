@@ -3,26 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ChatActivity">
-
-    <EditText
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
-        android:id="@+id/input"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="enter"
-        android:id="@+id/enter_button"/>
-    
-    
+    tools:context=".activities.ChatActivity"
+    android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="60dp">
+        android:id="@+id/scrollView"
+        android:layout_above="@id/inputSection">
         
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,8 +19,24 @@
             android:orientation="vertical">
 
         </LinearLayout>
-
-
     </ScrollView>
+
+    <!-- LinearLayout moves when keyboard shows up -->
+    <LinearLayout
+        android:id="@+id/inputSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/input"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="enter"
+            android:id="@+id/enter_button"/>
+    </LinearLayout>
 
 </RelativeLayout>

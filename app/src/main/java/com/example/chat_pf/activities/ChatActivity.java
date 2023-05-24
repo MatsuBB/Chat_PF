@@ -3,12 +3,15 @@ package com.example.chat_pf.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.OneShotPreDrawListener;
 
+import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -31,8 +34,12 @@ import java.util.Objects;
 
 public class ChatActivity extends AppCompatActivity {
 
-    ActivityChatBinding binding;
+    ActivityChatBinding bind;
     String TAG="DEBUGGING";
+
+    public static float PxToDp(final Context context, final float px) {
+        return px / context.getResources().getDisplayMetrics().density;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +48,8 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         // needed stuff
-        binding = ActivityChatBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        bind = ActivityChatBinding.inflate(getLayoutInflater());
+        setContentView(bind.getRoot());
 
         // getting the user
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -51,8 +58,24 @@ public class ChatActivity extends AppCompatActivity {
         mDBO.loadMessages(user);
 
         // submits the input to the realtime database
-        EditText input = binding.input;
-        Button enter = binding.enterButton;
+        EditText input = bind.input;
+        Button enter = bind.enterButton;
+
+        input.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(b){
+                    Log.d(TAG, "entered on focus");
+                    bind.scrollView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            bind.scrollView.fullScroll(View.FOCUS_DOWN);
+                        }
+                    });
+                }
+            }
+        });
+
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,7 +124,13 @@ public class ChatActivity extends AppCompatActivity {
                             ds.child("date").getValue(Long.class),
                             ds.child("id").getValue(String.class));
                     Log.d(TAG, String.valueOf(message));
-                    displayMessage(binding.linearLayout, message, currentUser);
+                    displayMessage(bind.linearLayout, message, currentUser);
+                    bind.scrollView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            bind.scrollView.fullScroll(View.FOCUS_DOWN);
+                        }
+                    });
                 }
 
                 @Override
