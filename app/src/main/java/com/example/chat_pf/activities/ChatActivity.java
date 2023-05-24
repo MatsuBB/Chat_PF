@@ -11,7 +11,9 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.chat_pf.R;
@@ -52,7 +54,7 @@ public class ChatActivity extends AppCompatActivity {
 
         // submits the input to the realtime database
         EditText input = binding.input;
-        Button enter = binding.enterButton;
+        ImageButton enter = binding.enterButton;
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

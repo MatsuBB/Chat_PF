@@ -5,17 +5,30 @@
     android:layout_height="match_parent"
     tools:context=".activities.ChatActivity">
 
-    <EditText
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
-        android:id="@+id/input"/>
+    <RelativeLayout
+        android:layout_width="330dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="7dp"
+        android:layout_toEndOf="@+id/enter_button"
+        android:background="@drawable/text_background">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="enter"
-        android:id="@+id/enter_button"/>
+        <EditText
+            android:id="@+id/input"
+            android:layout_width="290dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="100dp"
+            android:hint="Escribe un mensaje" />
+
+    </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/enter_button"
+        android:layout_width="61dp"
+        android:layout_height="62dp"
+        android:background="@drawable/button_background"
+        android:src="@drawable/ic_send"
+        android:text="enter" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,7 +36,6 @@
         android:id="@+id/linearLayout"
         android:orientation="vertical"
         android:layout_marginTop="60dp">
-
     </LinearLayout>
 
 </RelativeLayout>

@@ -38,10 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView forgotPassword;
 
     final String TAG="DEBUGGING";
-//    GoogleSignInButton googleBtn;
-//    GoogleSignInOptions gOptions;
-//    GoogleSignInClient gClient;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.login_button);
         signupRedirectText = findViewById(R.id.signUpRedirectText);
         forgotPassword = findViewById(R.id.forgot_password);
-//        googleBtn = findViewById(R.id.googleBtn);
+
 
 
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -138,39 +135,6 @@ public class LoginActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
-//        //Inside onCreate
-//        gOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-//        gClient = GoogleSignIn.getClient(this, gOptions);
-//        GoogleSignInAccount gAccount = GoogleSignIn.getLastSignedInAccount(this);
-//        if (gAccount != null){
-//            finish();
-//            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//            startActivity(intent);
-//        }
-//        ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-//                new ActivityResultCallback<ActivityResult>() {
-//                    @Override
-//                    public void onActivityResult(ActivityResult result) {
-//                        if (result.getResultCode() == Activity.RESULT_OK){
-//                            Intent data = result.getData();
-//                            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-//                            try {
-//                                task.getResult(ApiException.class);
-//                                finish();
-//                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                                startActivity(intent);
-//                            } catch (ApiException e){
-//                                Toast.makeText(LoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                    }
-//                });
-//        googleBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent signInIntent = gClient.getSignInIntent();
-//                activityResultLauncher.launch(signInIntent);
-//            }
-//        });
+
     }
 }
