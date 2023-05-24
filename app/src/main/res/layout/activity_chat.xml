@@ -16,7 +16,7 @@ android:orientation="vertical">
         android:layout_height="wrap_content"
         android:id="@+id/linearLayout"
         android:orientation="vertical">
-        
+
     </LinearLayout>
 </ScrollView>
 
@@ -40,7 +40,7 @@ android:orientation="vertical">
             android:layout_height="match_parent"
             android:layout_marginStart="24dp"
             android:layout_marginLeft="100dp"
-            android:hint="Escribe un mensaje" />
+            android:hint="Write a message..." />
 
     </RelativeLayout>
     <ImageButton
