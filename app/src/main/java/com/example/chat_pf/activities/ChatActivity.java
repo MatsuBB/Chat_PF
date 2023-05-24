@@ -2,10 +2,12 @@ package com.example.chat_pf.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.OneShotPreDrawListener;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.Typeface;
@@ -68,11 +70,23 @@ public class ChatActivity extends AppCompatActivity {
         EditText input = bind.input;
         ImageButton enter = bind.enterButton;
 
+        // logging out
+        AlertDialog.Builder builder = new AlertDialog.Builder(ChatActivity.this);
+        builder.setMessage("Are you sure you want to log out?");
+        builder.setTitle("Logging out");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Yes", (DialogInterface.OnClickListener) (dialog, which) -> {
+            auth.signOut();
+            startActivity(new Intent(ChatActivity.this, LoginActivity.class));
+        });
+        builder.setNegativeButton("No", (DialogInterface.OnClickListener) (dialog, which) -> {
+            dialog.cancel();
+        });
         bind.logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                auth.signOut();
-                startActivity(new Intent(ChatActivity.this, LoginActivity.class));
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
         });
 
