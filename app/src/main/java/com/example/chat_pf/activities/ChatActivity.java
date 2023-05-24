@@ -6,12 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.OneShotPreDrawListener;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.WindowInsets;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -40,6 +45,8 @@ public class ChatActivity extends AppCompatActivity {
     ActivityChatBinding bind;
     String TAG="DEBUGGING";
 
+    public boolean isKeyboardShowing = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         DatabaseOperations mDBO = new DatabaseOperations();
@@ -47,6 +54,7 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         // needed stuff
+        FirebaseAuth auth = FirebaseAuth.getInstance();
         bind = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(bind.getRoot());
 
@@ -60,20 +68,61 @@ public class ChatActivity extends AppCompatActivity {
         EditText input = bind.input;
         ImageButton enter = bind.enterButton;
 
-        input.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        bind.logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFocusChange(View view, boolean b) {
-                if(b){
-                    Log.d(TAG, "entered on focus");
-                    bind.scrollView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            bind.scrollView.fullScroll(View.FOCUS_DOWN);
-                        }
-                    });
-                }
+            public void onClick(View view) {
+                auth.signOut();
+                startActivity(new Intent(ChatActivity.this, LoginActivity.class));
             }
         });
+
+        input.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bind.scrollView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        bind.scrollView.fullScroll(View.FOCUS_DOWN);
+                    }
+                });
+            }
+        });
+
+        bind.rootView.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+
+                        Rect r = new Rect();
+                        bind.rootView.getWindowVisibleDisplayFrame(r);
+                        int screenHeight = bind.rootView.getRootView().getHeight();
+
+                        // r.bottom is the position above soft keypad or device button.
+                        // if keypad is shown, the r.bottom is smaller than that before.
+                        int keypadHeight = screenHeight - r.bottom;
+
+                        Log.d(TAG, "keypadHeight = " + keypadHeight);
+
+                        if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
+                            // keyboard is opened
+                            if (!isKeyboardShowing) {
+                                bind.scrollView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        bind.scrollView.fullScroll(View.FOCUS_DOWN);
+                                    }
+                                });
+                                isKeyboardShowing = true;
+                            }
+                        }
+                        else {
+                            // keyboard is closed
+                            if (isKeyboardShowing) {
+                                isKeyboardShowing = false;
+                            }
+                        }
+                    }
+                });
 
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,15 +148,17 @@ public class ChatActivity extends AppCompatActivity {
         public void sendMessage(FirebaseUser user, String message){
             if(user != null){
                 try{
-                    String name = user.getDisplayName();
-                    String id = user.getUid();
+                    if(!message.equals("")) {
+                        String name = user.getDisplayName();
+                        String id = user.getUid();
 
-                    Long currentTime = System.currentTimeMillis();
-                    SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss");
+                        Long currentTime = System.currentTimeMillis();
+                        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss");
 
-                    DatabaseReference newRef = mDatabase.child("messages").child(
-                            sdf.format(new Date(currentTime)));
-                    newRef.setValue(new Message(name, message, currentTime, id));
+                        DatabaseReference newRef = mDatabase.child("messages").child(
+                                sdf.format(new Date(currentTime)));
+                        newRef.setValue(new Message(name, message, currentTime, id));
+                    }
                 } catch(Exception e){Log.e(TAG, "error sending message");}
             } else{Log.e(TAG, "null user can not send message");}
         }

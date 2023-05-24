@@ -56,8 +56,45 @@ public class ChatSelectActivity extends AppCompatActivity {
         private final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         private final String TAG = "DBO";
 
-        public void getLastMessageSent(){
+        public void getLastMessageSentGeneral(){
             mDatabase.child("messages").addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot ds, @Nullable String previousChildName) {
+                    Message message = new Message(
+                            ds.child("name").getValue(String.class),
+                            ds.child("text").getValue(String.class),
+                            ds.child("date").getValue(Long.class),
+                            ds.child("id").getValue(String.class));
+                    Log.d(TAG, String.valueOf(message));
+
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    Log.e(TAG, "loadMessageListener:onChildChanged");
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                    Log.e(TAG, "loadMessageListener:onChildRemoved");
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    Log.e(TAG, "loadMessageListener:onChildMoved");
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.e(TAG, "loadMessageListener:onCancelled");
+                }
+            });
+        }
+
+        public void getLastMessage(FirebaseUser user, String otherUser){
+            String id = user.getUid();
+            mDatabase.child("users").child(id).child(otherUser).
+                    addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot ds, @Nullable String previousChildName) {
                     Message message = new Message(

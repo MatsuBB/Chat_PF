@@ -18,7 +18,7 @@
             android:layout_height="match_parent"
             android:background="@color/purple_high"
             android:src="@drawable/ic_arrow_back"
-            android:id="@+id/logoutButton"/>
+            android:id="@+id/backButton"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,7 +38,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
+        android:layout_below="@id/topMenu"
+        android:layout_marginTop="5dp">
         <RelativeLayout
             android:layout_width="330dp"
             android:layout_height="61dp"
@@ -60,13 +61,13 @@
             android:layout_width="61dp"
             android:layout_height="62dp"
             android:background="@drawable/button_background"
-            android:src="@drawable/ic_send"/>
+            android:src="@drawable/ic_user_add"/>
     </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/topMenu">
+        android:layout_below="@id/inputSection">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

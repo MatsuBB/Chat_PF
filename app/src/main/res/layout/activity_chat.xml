@@ -4,12 +4,40 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context=".activities.ChatActivity"
-android:orientation="vertical">
+android:orientation="vertical"
+    android:id="@+id/rootView">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/yellow_high"
+        android:orientation="horizontal"
+        android:id="@+id/topMenu"
+        android:layout_marginBottom="5dp">
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="@color/purple_high"
+            android:src="@drawable/ic_arrow_back"
+            android:id="@+id/logoutButton"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/forgotTitle"
+            android:text="CHATTY ROOM"
+            android:textStyle="bold"
+            android:padding="20dp"
+            android:textSize="20dp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:drawablePadding="8dp"/>
+    </LinearLayout>
 
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="61dp"
+    android:layout_below="@id/topMenu"
     android:id="@+id/scrollView">
     <LinearLayout
         android:layout_width="match_parent"
