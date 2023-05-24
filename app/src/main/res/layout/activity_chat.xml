@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context=".activities.ChatActivity"
-android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.ChatActivity"
+    android:orientation="vertical"
     android:id="@+id/rootView">
 
     <LinearLayout
@@ -33,50 +33,52 @@ android:orientation="vertical"
             android:drawablePadding="8dp"/>
     </LinearLayout>
 
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginBottom="61dp"
-    android:layout_below="@id/topMenu"
-    android:id="@+id/scrollView">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="65dp"
+        android:layout_below="@id/topMenu"
+        android:id="@+id/scrollView">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout"
+            android:orientation="vertical">
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- LinearLayout moves when keyboard shows up -->
     <LinearLayout
+        android:id="@+id/inputSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/linearLayout"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp">
+        <RelativeLayout
+            android:layout_width="315dp"
+            android:layout_height="61dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_toEndOf="@+id/enter_button"
+            android:background="@drawable/text_background">
 
+            <EditText
+                android:id="@+id/input"
+                android:layout_width="275dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="100dp"
+                android:hint="Write a message..." />
+
+        </RelativeLayout>
+        <ImageButton
+            android:id="@+id/enter_button"
+            android:layout_width="61dp"
+            android:layout_height="62dp"
+            android:background="@drawable/button_background"
+            android:src="@drawable/ic_send"/>
     </LinearLayout>
-</ScrollView>
-
-<!-- LinearLayout moves when keyboard shows up -->
-<LinearLayout
-    android:id="@+id/inputSection"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:layout_alignParentBottom="true">
-    <RelativeLayout
-        android:layout_width="330dp"
-        android:layout_height="61dp"
-        android:layout_marginStart="7dp"
-        android:layout_toEndOf="@+id/enter_button"
-        android:background="@drawable/text_background">
-
-        <EditText
-            android:id="@+id/input"
-            android:layout_width="290dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="100dp"
-            android:hint="Write a message..." />
-
-    </RelativeLayout>
-    <ImageButton
-        android:id="@+id/enter_button"
-        android:layout_width="61dp"
-        android:layout_height="62dp"
-        android:background="@drawable/button_background"
-        android:src="@drawable/ic_send"/>
-</LinearLayout>
 
 </RelativeLayout>
