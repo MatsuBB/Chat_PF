@@ -15,7 +15,9 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.chat_pf.R;
@@ -37,10 +39,6 @@ public class ChatActivity extends AppCompatActivity {
 
     ActivityChatBinding bind;
     String TAG="DEBUGGING";
-
-    public static float PxToDp(final Context context, final float px) {
-        return px / context.getResources().getDisplayMetrics().density;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,9 +160,12 @@ public class ChatActivity extends AppCompatActivity {
             // Setting the properties for all messages
             TextView tv_name = new TextView(ChatActivity.this);
             TextView tv_message = new TextView(ChatActivity.this);
+            RelativeLayout surroundsMessage = new RelativeLayout(ChatActivity.this);
+            //ImageView iv_message = new ImageView(ChatActivity.this);
+            //iv_message.setImageDrawable(getDrawable(R.drawable.chat_bubble));
 
-            LinearLayout.LayoutParams m_params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            RelativeLayout.LayoutParams m_params = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             tv_message.setText(m.text);
             tv_message.setTextSize(22);
 
@@ -174,23 +175,33 @@ public class ChatActivity extends AppCompatActivity {
             tv_name.setTextSize(22);
             tv_name.setTypeface(Typeface.DEFAULT_BOLD);
 
+            RelativeLayout.LayoutParams s_params = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            tv_message.setPadding(50, 10, 50, 10);
+
             if(user.getUid().equals(m.id)) {
                 // Setting some properties for messages that are from the current user
-                tv_message.setGravity(Gravity.RIGHT);
+                surroundsMessage.setHorizontalGravity(Gravity.RIGHT);
                 tv_name.setGravity(Gravity.RIGHT);
-                n_params.setMargins(0, 0, 5, 0);
-                m_params.setMargins(250, 0, 55, 0);
+                n_params.setMargins(0, 0, 10, 0);
+                m_params.setMargins(250, 0, 55, 20);
+                tv_message.setBackground(getDrawable(R.drawable.chat_bubble_right));
             } else{
                 // Setting some properties for messages that are NOT from the current user
-                n_params.setMargins(5, 0, 0, 0);
-                m_params.setMargins(55, 0, 250, 0);
+                n_params.setMargins(10, 0, 0, 0);
+                m_params.setMargins(55, 0, 250, 20);
+                tv_message.setBackground(getDrawable(R.drawable.chat_bubble_left));
             }
+
+            //surroundsMessage.setLayoutParams(s_params);
 
             tv_name.setLayoutParams(n_params);
             tv_message.setLayoutParams(m_params);
 
             layout.addView(tv_name);
-            layout.addView(tv_message);
+            //layout.addView(tv_message);
+            surroundsMessage.addView(tv_message);
+            layout.addView(surroundsMessage);
         } catch(Exception e){Log.e(TAG, String.valueOf(e));}
     }
 }

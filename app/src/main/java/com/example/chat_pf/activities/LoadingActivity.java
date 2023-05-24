@@ -23,7 +23,7 @@ public class LoadingActivity extends AppCompatActivity {
 
         Glide.with(this).load(R.drawable.logo_image).into(binding.icImage);
 
-        myCountDownTimer = new MyCountDownTimer(5000,1000);
+        myCountDownTimer = new MyCountDownTimer(3000,1000);
         myCountDownTimer.start();
 
     }

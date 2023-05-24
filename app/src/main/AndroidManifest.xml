@@ -19,9 +19,15 @@
         android:theme="@style/Theme.Chat_PF"
         tools:targetApi="31">
         <activity
+            android:name=".activities.ChatCreateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ChatSelectActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.ChatActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activities.LoadingActivity"
             android:exported="false" />
