@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.chat_pf.R;
@@ -44,6 +45,11 @@ public class ChatActivity extends AppCompatActivity {
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        ScrollView scrollView = binding.scrl;
+
+        // Set focus to the bottom of the ScrollView
+        scrollView.post(() -> scrollView.fullScroll(View.FOCUS_DOWN));
+
         // getting the user
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -53,6 +59,8 @@ public class ChatActivity extends AppCompatActivity {
         // submits the input to the realtime database
         EditText input = binding.input;
         Button enter = binding.enterButton;
+
+
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,6 +110,7 @@ public class ChatActivity extends AppCompatActivity {
                             ds.child("id").getValue(String.class));
                     Log.d(TAG, String.valueOf(message));
                     displayMessage(binding.linearLayout, message, currentUser);
+                    binding.scrl.post(() -> binding.scrl.fullScroll(View.FOCUS_DOWN));
                 }
 
                 @Override
@@ -138,11 +147,14 @@ public class ChatActivity extends AppCompatActivity {
             tv_message.setText(m.text);
             tv_message.setTextSize(22);
 
+
             LinearLayout.LayoutParams n_params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             tv_name.setText(m.name);
             tv_name.setTextSize(22);
             tv_name.setTypeface(Typeface.DEFAULT_BOLD);
+
+
 
             if(user.getUid().equals(m.id)) {
                 // Setting some properties for messages that are from the current user

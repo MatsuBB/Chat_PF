@@ -29,10 +29,16 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+
+
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding activityMainBinding;
     DatabaseReference reference;
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(view);
 
         final ImageView profile_pic = activityMainBinding.profilePicImageview;
+        final ImageView ad = activityMainBinding.ad;
         final TextView username = activityMainBinding.chatName;
         final TextView recent_messages = activityMainBinding.recentMessages;
 
@@ -116,4 +123,7 @@ public class MainActivity extends AppCompatActivity {
             return titles.get(position);
         }
     }
+
+
+
 }

@@ -9,29 +9,40 @@
     tools:context=".activities.MainActivity">
 
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="452dp"
+        android:layout_height="46dp">
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="442dp"
+            android:layout_height="85dp"
+            app:srcCompat="@drawable/yellow_box" />
+    </androidx.cardview.widget.CardView>
+
+    <RelativeLayout
         android:id="@+id/bicho"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
-
+        android:layout_height="70dp">
 
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/parent_image_view"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_margin="10dp"
-            android:layout_centerVertical="true"
-            android:id="@+id/parent_image_view"
             android:layout_alignParentLeft="true"
-            app:cardCornerRadius="25dp"
-            >
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="25dp">
+
             <ImageView
-                android:layout_height="50dp"
-                android:layout_width="wrap_content"
                 android:id="@+id/profile_pic_imageview"
-                android:src="@drawable/fondo"
-                android:scaleType="centerCrop"/>
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_person"
+                />
         </androidx.cardview.widget.CardView>
 
         <TextView
@@ -73,7 +84,14 @@
 
     </RelativeLayout>
 
-<!--    <com.google.android.material.tabs.TabLayout-->
+    <ImageView
+        android:id="@+id/ad"
+        android:layout_width="wrap_content"
+        android:layout_height="170dp"
+        android:layout_gravity="bottom"
+        app:srcCompat="@drawable/mcdonalds" />
+
+    <!--    <com.google.android.material.tabs.TabLayout-->
 <!--    android:id="@+id/tab_layout"-->
 <!--    android:layout_width="match_parent"-->
 <!--    android:layout_height="wrap_content"-->
