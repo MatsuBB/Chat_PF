@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -59,7 +60,7 @@ public class ChatActivity extends AppCompatActivity {
 
         // submits the input to the realtime database
         EditText input = bind.input;
-        Button enter = bind.enterButton;
+        ImageButton enter = bind.enterButton;
 
         input.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
