@@ -41,7 +41,7 @@ public class LoadingActivity extends AppCompatActivity {
 
         @Override
         public void onFinish() {
-            Intent intent = new Intent(LoadingActivity.this, ChatActivity.class);
+            Intent intent = new Intent(LoadingActivity.this, MainActivity.class);//checar
             startActivity(intent);
         }
     }

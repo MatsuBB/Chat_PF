@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    tools:context=".activities.MainActivity">
+
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="452dp"
+        android:layout_height="46dp">
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="442dp"
+            android:layout_height="85dp"
+            app:srcCompat="@drawable/yellow_box" />
+    </androidx.cardview.widget.CardView>
+
+    <RelativeLayout
+        android:id="@+id/bicho"
+        android:layout_width="match_parent"
+        android:layout_height="70dp">
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/parent_image_view"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="25dp">
+
+            <ImageView
+                android:id="@+id/profile_pic_imageview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_person"
+                />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/chat_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/parent_image_view"
+            android:singleLine="true"
+            android:text="user_one"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/recent_messages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/chat_name"
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@+id/parent_image_view"
+            android:maxWidth="150dp"
+            android:singleLine="true"
+            android:text="Enter Chat"
+            android:textSize="16dp" />
+
+
+        <TextView
+            android:id="@+id/recent_time"
+            android:layout_width="23dp"
+            android:layout_height="6dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:text="00:00" />
+
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/ad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/mcdonalds"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:layout_marginTop="443dp"
+        android:layout_gravity="bottom" />
+
+
+</LinearLayout>
