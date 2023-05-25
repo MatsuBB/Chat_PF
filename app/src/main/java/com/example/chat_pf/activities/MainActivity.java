@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.chat_pf.R;
-import com.example.chat_pf.fragments.ChatFragment;
 import com.example.chat_pf.fragments.UserFragment;
 import com.example.chat_pf.databinding.ActivityMainBinding;
 
@@ -79,9 +78,9 @@ public class MainActivity extends AppCompatActivity {
 
 //        TabLayout tabLayout = activityMainBinding.tabLayout;
 //        ViewPager viewPager = activityMainBinding.viewPager;
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFragment(new ChatFragment(), "Chats");
-        viewPagerAdapter.addFragment(new UserFragment(), "Users");
+//        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+//        viewPagerAdapter.addFragment(new ChatFragment(), "Chats");
+//        viewPagerAdapter.addFragment(new UserFragment(), "Users");
 //        viewPager.setAdapter(viewPagerAdapter);
 //        tabLayout.setupWithViewPager(viewPager);
 
