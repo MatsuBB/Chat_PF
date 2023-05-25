@@ -10,16 +10,25 @@
 
 
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="452dp"
-        android:layout_height="46dp">
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="442dp"
-            android:layout_height="85dp"
-            app:srcCompat="@drawable/yellow_box" />
-    </androidx.cardview.widget.CardView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/yellow_high"
+        android:orientation="horizontal"
+        android:id="@+id/topMenu"
+        android:layout_marginBottom="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/forgotTitle"
+            android:text="CHATTY APP"
+            android:textStyle="bold"
+            android:padding="20dp"
+            android:textSize="20dp"
+            android:textAlignment="center"
+            android:textColor="@color/yellow_super_light"
+            android:drawablePadding="8dp"/>
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/bicho"

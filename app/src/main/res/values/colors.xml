@@ -5,7 +5,9 @@
     <color name="yellow_light">#FECC38</color>
     <color name="yellow_high">#F7B400</color>
     <color name="white_light">#FEFEFE</color>
+    <color name="gray_light">#B9C1C1C1</color>
     <color name="purple_high">#966CF1</color>
     <color name="purple_light">#B89CF3</color>
+    <color name="yellow_super_light">#FFF8E4</color>
+    <color name="gray_super_light">#CDCDCD</color>
 </resources>
-

@@ -2,17 +2,29 @@ package com.example.chat_pf.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.OneShotPreDrawListener;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.WindowInsets;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.chat_pf.R;
@@ -32,8 +44,10 @@ import java.util.Objects;
 
 public class ChatActivity extends AppCompatActivity {
 
-    ActivityChatBinding binding;
+    ActivityChatBinding bind;
     String TAG="DEBUGGING";
+
+    public boolean isKeyboardShowing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +56,9 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         // needed stuff
-        binding = ActivityChatBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        ScrollView scrollView = binding.scrl;
-
-        // Set focus to the bottom of the ScrollView
-        scrollView.post(() -> scrollView.fullScroll(View.FOCUS_DOWN));
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        bind = ActivityChatBinding.inflate(getLayoutInflater());
+        setContentView(bind.getRoot());
 
         // getting the user
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -57,9 +67,76 @@ public class ChatActivity extends AppCompatActivity {
         mDBO.loadMessages(user);
 
         // submits the input to the realtime database
-        EditText input = binding.input;
-        Button enter = binding.enterButton;
+        EditText input = bind.input;
+        ImageButton enter = bind.enterButton;
 
+        // logging out
+        AlertDialog.Builder builder = new AlertDialog.Builder(ChatActivity.this);
+        builder.setMessage("Are you sure you want to log out?");
+        builder.setTitle("Logging out");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Yes", (DialogInterface.OnClickListener) (dialog, which) -> {
+            auth.signOut();
+            startActivity(new Intent(ChatActivity.this, LoginActivity.class));
+        });
+        builder.setNegativeButton("No", (DialogInterface.OnClickListener) (dialog, which) -> {
+            dialog.cancel();
+        });
+        bind.logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+        });
+
+        input.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bind.scrollView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        bind.scrollView.fullScroll(View.FOCUS_DOWN);
+                    }
+                });
+            }
+        });
+
+        bind.rootView.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+
+                        Rect r = new Rect();
+                        bind.rootView.getWindowVisibleDisplayFrame(r);
+                        int screenHeight = bind.rootView.getRootView().getHeight();
+
+                        // r.bottom is the position above soft keypad or device button.
+                        // if keypad is shown, the r.bottom is smaller than that before.
+                        int keypadHeight = screenHeight - r.bottom;
+
+                        Log.d(TAG, "keypadHeight = " + keypadHeight);
+
+                        if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
+                            // keyboard is opened
+                            if (!isKeyboardShowing) {
+                                bind.scrollView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        bind.scrollView.fullScroll(View.FOCUS_DOWN);
+                                    }
+                                });
+                                isKeyboardShowing = true;
+                            }
+                        }
+                        else {
+                            // keyboard is closed
+                            if (isKeyboardShowing) {
+                                isKeyboardShowing = false;
+                            }
+                        }
+                    }
+                });
 
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,15 +162,17 @@ public class ChatActivity extends AppCompatActivity {
         public void sendMessage(FirebaseUser user, String message){
             if(user != null){
                 try{
-                    String name = user.getDisplayName();
-                    String id = user.getUid();
+                    if(!message.equals("")) {
+                        String name = user.getDisplayName();
+                        String id = user.getUid();
 
-                    Long currentTime = System.currentTimeMillis();
-                    SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss");
+                        Long currentTime = System.currentTimeMillis();
+                        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss");
 
-                    DatabaseReference newRef = mDatabase.child("messages").child(
-                            sdf.format(new Date(currentTime)));
-                    newRef.setValue(new Message(name, message, currentTime, id));
+                        DatabaseReference newRef = mDatabase.child("messages").child(
+                                sdf.format(new Date(currentTime)));
+                        newRef.setValue(new Message(name, message, currentTime, id));
+                    }
                 } catch(Exception e){Log.e(TAG, "error sending message");}
             } else{Log.e(TAG, "null user can not send message");}
         }
@@ -109,8 +188,13 @@ public class ChatActivity extends AppCompatActivity {
                             ds.child("date").getValue(Long.class),
                             ds.child("id").getValue(String.class));
                     Log.d(TAG, String.valueOf(message));
-                    displayMessage(binding.linearLayout, message, currentUser);
-                    binding.scrl.post(() -> binding.scrl.fullScroll(View.FOCUS_DOWN));
+                    displayMessage(bind.linearLayout, message, currentUser);
+                    bind.scrollView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            bind.scrollView.fullScroll(View.FOCUS_DOWN);
+                        }
+                    });
                 }
 
                 @Override
@@ -141,12 +225,19 @@ public class ChatActivity extends AppCompatActivity {
             // Setting the properties for all messages
             TextView tv_name = new TextView(ChatActivity.this);
             TextView tv_message = new TextView(ChatActivity.this);
+            TextView tv_date = new TextView(ChatActivity.this);
+            RelativeLayout surroundsMessage = new RelativeLayout(ChatActivity.this);
+            //ImageView iv_message = new ImageView(ChatActivity.this);
+            //iv_message.setImageDrawable(getDrawable(R.drawable.chat_bubble));
 
-            LinearLayout.LayoutParams m_params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            RelativeLayout.LayoutParams m_params = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             tv_message.setText(m.text);
             tv_message.setTextSize(22);
 
+            SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
+            tv_date.setText(sdf.format(new Date(m.date)));
+            tv_date.setTextSize(16);
 
             LinearLayout.LayoutParams n_params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -154,25 +245,37 @@ public class ChatActivity extends AppCompatActivity {
             tv_name.setTextSize(22);
             tv_name.setTypeface(Typeface.DEFAULT_BOLD);
 
-
+            RelativeLayout.LayoutParams d_params = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            tv_message.setPadding(50, 10, 50, 10);
 
             if(user.getUid().equals(m.id)) {
                 // Setting some properties for messages that are from the current user
-                tv_message.setGravity(Gravity.RIGHT);
+                surroundsMessage.setHorizontalGravity(Gravity.RIGHT);
                 tv_name.setGravity(Gravity.RIGHT);
-                n_params.setMargins(0, 0, 5, 0);
+                tv_date .setGravity(Gravity.RIGHT);
+                n_params.setMargins(0, 0, 10, 0);
                 m_params.setMargins(250, 0, 55, 0);
+                d_params.setMargins(630, 0, 10, 20);
+                tv_message.setBackground(getDrawable(R.drawable.chat_bubble_right));
             } else{
                 // Setting some properties for messages that are NOT from the current user
-                n_params.setMargins(5, 0, 0, 0);
+                n_params.setMargins(10, 0, 0, 0);
                 m_params.setMargins(55, 0, 250, 0);
+                d_params.setMargins(100, 0, 0, 20);
+                tv_message.setBackground(getDrawable(R.drawable.chat_bubble_left));
             }
+
+            //surroundsMessage.setLayoutParams(s_params);
 
             tv_name.setLayoutParams(n_params);
             tv_message.setLayoutParams(m_params);
+            tv_date.setLayoutParams(d_params);
 
             layout.addView(tv_name);
-            layout.addView(tv_message);
+            surroundsMessage.addView(tv_message);
+            layout.addView(surroundsMessage);
+            layout.addView(tv_date);
         } catch(Exception e){Log.e(TAG, String.valueOf(e));}
     }
 }
