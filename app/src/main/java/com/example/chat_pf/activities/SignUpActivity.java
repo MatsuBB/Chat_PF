@@ -66,24 +66,30 @@ public class SignUpActivity extends AppCompatActivity {
                 String name = signupName.getText().toString().trim();
                 String cpass = confirmPassword.getText().toString().trim();
 
-                if (user.isEmpty()){
-                    signupEmail.setError("Email cannot be empty");
-                }
+                if(user.isEmpty() || name.isEmpty() || pass.isEmpty() ||
+                        cpass.isEmpty() || !pass.equals(cpass) || user.length()>10) {
+                    if (user.isEmpty()) {
+                        signupEmail.setError("Email cannot be empty");
+                    }
 
-                if (name.isEmpty()){
-                    signupName.setError("Name cannot be empty");
-                }
+                    if (name.isEmpty()) {
+                        signupName.setError("Name cannot be empty");
+                    }
 
-                if (pass.isEmpty()){
-                    signupPassword.setError("Password cannot be empty");
-                }
+                    if (pass.isEmpty()) {
+                        signupPassword.setError("Password cannot be empty");
+                    }
 
-                if (cpass.isEmpty()){
-                    confirmPassword.setError("Password cannot be empty");
-                }
+                    if (cpass.isEmpty()) {
+                        confirmPassword.setError("Password cannot be empty");
+                    }
 
-                if (!pass.equals(cpass)){
-                    confirmPassword.setError("Password Incorrect");
+                    if (!pass.equals(cpass)) {
+                        confirmPassword.setError("Password Incorrect");
+                    }
+                    if(user.length()>10){
+                        signupName.setError("User cannot be longer than 10 characters");
+                    }
                 }
                 else{
                     auth.createUserWithEmailAndPassword(user, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
