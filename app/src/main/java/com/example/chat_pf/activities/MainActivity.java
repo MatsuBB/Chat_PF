@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.chat_pf.R;
-import com.example.chat_pf.fragments.UserFragment;
 import com.example.chat_pf.databinding.ActivityMainBinding;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,14 +28,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 
-
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding activityMainBinding;
     DatabaseReference reference;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,14 +70,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-//        TabLayout tabLayout = activityMainBinding.tabLayout;
-//        ViewPager viewPager = activityMainBinding.viewPager;
-//        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-//        viewPagerAdapter.addFragment(new ChatFragment(), "Chats");
-//        viewPagerAdapter.addFragment(new UserFragment(), "Users");
-//        viewPager.setAdapter(viewPagerAdapter);
-//        tabLayout.setupWithViewPager(viewPager);
 
     }
 
