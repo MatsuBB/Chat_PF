@@ -55,21 +55,18 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("name").child(user.getUid());
-
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 username.setText(user.getDisplayName());
-//
-            }
 
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
-
         recent_messages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
